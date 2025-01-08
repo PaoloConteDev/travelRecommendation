@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Recommendation</title>
+    <style>
+        /* Apply background image */
+        body {
+            background-image: url('background-image.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        /* Introduction container */
+        .intro {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin-top: 100px;
+        }
+
+        .intro h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .intro p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center; /* Center the nav items */
+            align-items: center;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            position: absolute;
+            left: 20px; /* Anchor the logo to the left */
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .search-bar {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 6px 10px;
+            font-size: 16px;
+        }
+
+        .search-bar button {
+            padding: 6px 12px;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        /* Recommendation results styling */
+        .recommendations {
+            margin-top: 100px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            visibility: hidden; /* Hide recommendations by default */
+        }
+
+        .recommendation {
+            background-color: rgba(0, 0, 0, 0.6);
+            margin: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            width: 250px;
+            text-align: center;
+        }
+
+        .recommendation img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .recommendation h3 {
+            color: white;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        .recommendation p {
+            color: white;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">TravelSite</div>
+        <div>
+            <a href="home.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </nav>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search recommendations..." />
+        <button onclick="searchFunction()">Search</button>
+        <button onclick="resetSearch()">Reset</button>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="intro">
+        <h1>Welcome to Travel Recommendation</h1>
+        <p>Find the best travel destinations based on your interests. Explore our recommendations for your next adventure!</p>
+    </div>
+
+    <!-- Recommendations Section (Initially hidden) -->
+    <div class="recommendations" id="recommendations"></div>
+
+    <script>
+        let allData = [];
+        // Fetch and display recommendation data from JSON file
+        fetch('travel_recommendation_api.json')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Log data to check if it's loaded
+                allData = data;  // Store data globally
+            })
+            .catch(error => console.error('Error fetching data:', error));
+
+        // Function to display recommendations based on data
+        function displayRecommendations(data) {
+            const recommendationsContainer = document.getElementById('recommendations');
+            recommendationsContainer.innerHTML = ''; // Clear previous results
+
+            // Iterate over countries and cities, temples, and beaches
+            if (data.countries.length > 0) {
+                data.countries.forEach(country => {
+                    country.cities.forEach(city => {
+                        const recommendationDiv = document.createElement('div');
+                        recommendationDiv.classList.add('recommendation');
+
+                        recommendationDiv.innerHTML = `
+                            <img src="${city.imageUrl}" alt="${city.name}">
+                            <h3>${city.name}</h3>
+                            <p>${city.description}</p>
+                        `;
+                        recommendationsContainer.appendChild(recommendationDiv);
+                    });
+                });
+            }
+
+            // Iterate over temples
+            if (data.temples.length > 0) {
+                data.temples.forEach(temple => {
+                    const recommendationDiv = document.createElement('div');
+                    recommendationDiv.classList.add('recommendation');
+
+                    recommendationDiv.innerHTML = `
+                        <img src="${temple.imageUrl}" alt="${temple.name}">
+                        <h3>${temple.name}</h3>
+                        <p>${temple.description}</p>
+                    `;
+                    recommendationsContainer.appendChild(recommendationDiv);
+                });
+            }
+
+            // Iterate over beaches
+            if (data.beaches.length > 0) {
+                data.beaches.forEach(beach => {
+                    const recommendationDiv = document.createElement('div');
+                    recommendationDiv.classList.add('recommendation');
+
+                    recommendationDiv.innerHTML = `
+                        <img src="${beach.imageUrl}" alt="${beach.name}">
+                        <h3>${beach.name}</h3>
+                        <p>${beach.description}</p>
+                    `;
+                    recommendationsContainer.appendChild(recommendationDiv);
+                });
+            }
+
+            // Make the recommendations section visible after results are added
+            recommendationsContainer.style.visibility = 'visible';
+        }
+
+        // Search and Reset functions
+        function searchFunction() {
+            const searchQuery = document.getElementById("search").value.toLowerCase(); // Convert to lowercase for case-insensitive search
+            if (!searchQuery) {
+                alert("Please enter a keyword to search.");
+                return;
+            }
+
+            let filteredData = {
+                countries: [],
+                temples: [],
+                beaches: []
+            };
+
+            // Search for matching keywords
+            if (searchQuery.includes("beach") || searchQuery.includes("beaches")) {
+                filteredData.beaches = allData.beaches.slice(0, 2); // Show first 2 beach recommendations
+            }
+            if (searchQuery.includes("temple")) {
+                filteredData.temples = allData.temples.slice(0, 2); // Show first 2 temple recommendations
+            }
+            if (searchQuery.includes("country") || searchQuery.includes("cities")) {
+                filteredData.countries = allData.countries.slice(0, 2); // Show first 2 country recommendations
+            }
+
+            // Display the filtered results
+            displayRecommendations(filteredData);
+        }
+
+        function resetSearch() {
+            document.getElementById("search").value = "";
+            const recommendationsContainer = document.getElementById('recommendations');
+            recommendationsContainer.innerHTML = '';  // Clear the results
+            recommendationsContainer.style.visibility = 'hidden';  // Hide the recommendations section
+        }
+    </script>
+</body>
+</html>

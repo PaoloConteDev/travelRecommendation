@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Recommendation</title>
+    <style>
+        /* Apply background image */
+        body {
+            background-image: url('background-image.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Introduction container */
+        .intro {
+            background-color: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+
+        .intro h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .intro p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        /* Navbar styling */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* TravelSite on the left side */
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 20px;
+        }
+
+        /* Navbar links */
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Search Bar styling */
+        .search-bar {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 6px 10px;
+            font-size: 16px;
+        }
+
+        .search-bar button {
+            padding: 6px 12px;
+            font-size: 16px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">TravelSite</div>
+        <div>
+            <a href="home.html">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </nav>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search recommendations..." />
+        <button onclick="searchFunction()">Search</button>
+        <button onclick="resetSearch()">Reset</button>
+    </div>
+
+    <!-- Introduction Section -->
+    <div class="intro">
+        <h1>Welcome to Travel Recommendation</h1>
+        <p>We help you find the best travel destinations based on your interests. Whether you're looking for a relaxing beach vacation, an adventurous hike, or a cultural journey, we have something for you!</p>
+        <p>Explore our recommendations and make your next trip unforgettable.</p>
+    </div>
+
+    <script>
+        // JavaScript functions for search and reset buttons
+        function searchFunction() {
+            const searchQuery = document.getElementById("search").value;
+            if (searchQuery) {
+                alert("Searching for: " + searchQuery);
+            } else {
+                alert("Please enter a keyword to search.");
+            }
+        }
+
+        function resetSearch() {
+            document.getElementById("search").value = "";
+        }
+    </script>
+</body>
+</html>
